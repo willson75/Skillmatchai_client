@@ -1,0 +1,3 @@
+const BASE=import.meta.env.VITE_API_URL||'https://skillmatch-backend-2zn1.onrender.com/api';
+export function getToken(){return localStorage.getItem('skillmatch_token')||'';}
+export async function api(path,{method='GET',body,form=false}={}){const headers={};if(getToken())headers.Authorization=`Bearer ${getToken()}`;if(body&&!form)headers['Content-Type']='application/json';const response=await fetch(`${BASE}${path}`,{method,headers,body:form?body:body?JSON.stringify(body):undefined});const data=await response.json().catch(()=>({error:'Server returned an unreadable response.'}));if(!response.ok)throw new Error(data.error||'Request failed.');return data;}
